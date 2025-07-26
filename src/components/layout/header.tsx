@@ -11,9 +11,10 @@ import {
 import { Button } from '@/components/ui/button';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { useAuth } from '@/hooks/use-auth';
-import { Bell, LogOut, Plus } from 'lucide-react';
+import { LogOut, Plus } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { ReceiptUploadDialog } from '@/components/receipts/receipt-upload-dialog';
+import { NotificationsDropdown } from './notifications-dropdown';
 
 export function AppHeader() {
   const { user, logout } = useAuth();
@@ -45,10 +46,7 @@ export function AppHeader() {
           <Plus className="h-4 w-4" />
           <span className="hidden sm:inline">Add Receipt</span>
         </Button>
-        <Button variant="ghost" size="icon" className="rounded-full">
-          <Bell className="h-5 w-5" />
-          <span className="sr-only">Toggle notifications</span>
-        </Button>
+        <NotificationsDropdown />
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Button variant="secondary" size="icon" className="rounded-full">
