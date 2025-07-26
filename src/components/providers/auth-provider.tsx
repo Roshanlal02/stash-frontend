@@ -16,11 +16,18 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    // only run if auth is fully initialized
-    if (!auth.onAuthStateChanged) {
-        setLoading(false);
-        return;
+    // If Firebase isn't configured, we'll create a mock user to bypass login.
+    if (!auth?.app?.options?.apiKey) {
+      setUser({
+        uid: 'mock-user-id',
+        email: 'dev@example.com',
+        displayName: 'Dev User',
+        photoURL: 'https://placehold.co/100x100.png',
+      } as User);
+      setLoading(false);
+      return;
     }
+    
     const unsubscribe = onAuthStateChanged(auth, (user) => {
       setUser(user);
       setLoading(false);
