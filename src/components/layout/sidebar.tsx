@@ -6,17 +6,16 @@ import {
   Receipt,
   PiggyBank,
   BarChart,
-  Wallet,
-  Gamepad2,
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import Image from 'next/image';
+import stashLogo from "../../app/stashLogo.png"
 
 const navItems = [
   { href: '/dashboard', label: 'Dashboard', icon: LayoutDashboard },
   { href: '/receipts', label: 'Receipts', icon: Receipt },
   { href: '/budget', label: 'Budget', icon: PiggyBank },
   { href: '/stats', label: 'Stats & Badges', icon: BarChart },
-  { href: '/gamification', label: 'Gamification', icon: Gamepad2 },
 ];
 
 export function AppSidebar({ onLinkClick }: { onLinkClick?: () => void }) {
@@ -25,9 +24,15 @@ export function AppSidebar({ onLinkClick }: { onLinkClick?: () => void }) {
   return (
     <div className="flex h-full max-h-screen flex-col gap-2">
       <div className="flex h-14 items-center border-b px-4 lg:h-[60px] lg:px-6">
-        <Link href="/dashboard" className="flex items-center gap-2 font-semibold">
-          <Wallet className="h-6 w-6 text-primary" />
-          <span className="">Wallet Scanner</span>
+        <Link href="/dashboard" className="flex items-center gap-2 font-semibold min-w-0">
+          <Image 
+            src={stashLogo.src} 
+            alt="Stash Logo" 
+            width={36} 
+            height={36} 
+            className="shrink-0"
+          />
+          <span className="truncate">Stash</span>
         </Link>
       </div>
       <div className="flex-1 overflow-y-auto">
@@ -38,12 +43,12 @@ export function AppSidebar({ onLinkClick }: { onLinkClick?: () => void }) {
               href={item.href}
               onClick={onLinkClick}
               className={cn(
-                'flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:bg-muted hover:text-primary',
+                'flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:bg-muted hover:text-primary min-w-0',
                 { 'bg-muted text-primary': pathname.startsWith(item.href) }
               )}
             >
-              <item.icon className="h-4 w-4" />
-              {item.label}
+              <item.icon className="h-4 w-4 shrink-0" />
+              <span className="truncate">{item.label}</span>
             </Link>
           ))}
         </nav>

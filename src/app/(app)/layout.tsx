@@ -15,10 +15,8 @@ export default function AppLayout({ children }: { children: ReactNode }) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   useEffect(() => {
-    // If auth is disabled (mock user exists) or user is logged in, we stay.
-    // Otherwise, redirect to login.
     if (!loading && !user) {
-      router.push('/login');
+      router.replace('/login');
     }
   }, [user, loading, router]);
 
@@ -30,18 +28,17 @@ export default function AppLayout({ children }: { children: ReactNode }) {
     );
   }
 
-  // Render nothing if we are about to redirect
   if (!user) {
     return null;
   }
 
   return (
-    <div className="grid min-h-screen w-full md:grid-cols-[220px_1fr] lg:grid-cols-[280px_1fr]">
+    <div className="grid min-h-screen w-full md:grid-cols-[220px_1fr] lg:grid-cols-[280px_1fr] overflow-hidden">
       <div className="hidden border-r bg-card md:block">
         <AppSidebar />
       </div>
-      <div className="flex flex-col">
-        <header className="flex h-14 items-center gap-4 border-b bg-card px-4 lg:h-[60px] lg:px-6 sticky top-0 z-30">
+      <div className="flex flex-col min-w-0">
+        <header className="flex h-14 items-center gap-4 border-b bg-card px-4 lg:h-[60px] lg:px-6 sticky top-0 z-30 shrink-0">
           <Sheet open={mobileMenuOpen} onOpenChange={setMobileMenuOpen}>
             <SheetTrigger asChild>
               <Button variant="outline" size="icon" className="shrink-0 md:hidden">
@@ -49,17 +46,17 @@ export default function AppLayout({ children }: { children: ReactNode }) {
                 <span className="sr-only">Toggle navigation menu</span>
               </Button>
             </SheetTrigger>
-            <SheetContent side="left" className="flex flex-col p-0 w-[280px]">
+            <SheetContent side="left" className="flex flex-col p-0 w-[280px] sm:w-[320px]">
               <SheetHeader>
                 <SheetTitle className="sr-only">Navigation Menu</SheetTitle>
               </SheetHeader>
               <AppSidebar onLinkClick={() => setMobileMenuOpen(false)} />
             </SheetContent>
           </Sheet>
-          <div className="w-full flex-1" />
+          <div className="w-full flex-1 min-w-0" />
           <AppHeader />
         </header>
-        <main className="flex flex-1 flex-col gap-4 p-4 lg:gap-6 lg:p-6 bg-background overflow-auto">
+        <main className="flex flex-1 flex-col gap-4 p-4 lg:gap-6 lg:p-6 bg-background overflow-y-auto min-h-0 min-w-0">
           {children}
         </main>
       </div>

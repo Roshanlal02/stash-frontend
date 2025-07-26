@@ -60,17 +60,23 @@ export function ReceiptUpload() {
   };
 
   return (
-    <Card>
-      <CardHeader>
+    <Card className="w-full">
+      <CardHeader className="pb-4">
         <CardTitle>Upload Receipt</CardTitle>
         <CardDescription>Upload an image of your receipt for processing.</CardDescription>
       </CardHeader>
       <CardContent className="space-y-4">
-        <div className="flex flex-col items-center justify-center text-center p-6 border-2 border-dashed rounded-lg">
-            <UploadCloud className="h-12 w-12 text-muted-foreground mb-4" />
-            <p className="text-sm text-muted-foreground mb-2">Drag &amp; drop a file or</p>
-            <Input id="receipt-upload" type="file" onChange={handleFileChange} className="w-auto" />
-            {file && <p className="text-sm mt-2 text-muted-foreground">{file.name}</p>}
+        <div className="flex flex-col items-center justify-center text-center p-4 sm:p-6 border-2 border-dashed rounded-lg min-h-[120px]">
+            <UploadCloud className="h-8 w-8 sm:h-12 sm:w-12 text-muted-foreground mb-2 sm:mb-4" />
+            <p className="text-xs sm:text-sm text-muted-foreground mb-2">Drag &amp; drop a file or</p>
+            <Input 
+              id="receipt-upload" 
+              type="file" 
+              onChange={handleFileChange} 
+              className="w-full max-w-[200px] text-xs sm:text-sm" 
+              accept="image/*"
+            />
+            {file && <p className="text-xs sm:text-sm mt-2 text-muted-foreground truncate max-w-full">{file.name}</p>}
         </div>
         
         <Button onClick={handleSubmit} disabled={isLoading || !file} className="w-full">
@@ -81,8 +87,8 @@ export function ReceiptUpload() {
         {anomalyResult && (
             <Alert variant={anomalyResult.anomalyDetected ? "destructive" : "default"}>
                 <AlertCircle className="h-4 w-4" />
-                <AlertTitle>{anomalyResult.anomalyDetected ? "Anomaly Found" : "All Clear"}</AlertTitle>
-                <AlertDescription>{anomalyResult.explanation}</AlertDescription>
+                <AlertTitle className="text-sm">{anomalyResult.anomalyDetected ? "Anomaly Found" : "All Clear"}</AlertTitle>
+                <AlertDescription className="text-xs sm:text-sm">{anomalyResult.explanation}</AlertDescription>
             </Alert>
         )}
       </CardContent>

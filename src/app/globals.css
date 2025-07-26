@@ -86,3 +86,29 @@ body {
     @apply bg-background text-foreground;
   }
 }
+
+@layer utilities {
+  .container-responsive {
+    @apply w-full max-w-none px-4 sm:px-6 lg:px-8;
+  }
+  
+  .grid-responsive {
+    @apply grid gap-4 md:gap-6 lg:gap-8;
+  }
+  
+  .flex-responsive {
+    @apply flex flex-col gap-4 md:gap-6 lg:gap-8;
+  }
+  
+  .table-responsive {
+    @apply overflow-x-auto min-w-0;
+  }
+  
+  .text-responsive {
+    @apply text-sm sm:text-base;
+  }
+  
+  .card-responsive {
+    @apply min-w-0 overflow-hidden;
+  }
+}

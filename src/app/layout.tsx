@@ -4,8 +4,8 @@ import { AuthProvider } from '@/components/providers/auth-provider';
 import { Toaster } from "@/components/ui/toaster";
 
 export const metadata: Metadata = {
-  title: 'Wallet Scanner',
-  description: 'Scan receipts and manage your budget with Wallet Scanner.',
+  title: 'Stash',
+  description: 'Scan receipts and manage your budget with Stash.',
 };
 
 export default function RootLayout({

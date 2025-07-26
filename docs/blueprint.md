@@ -1,4 +1,4 @@
-# **App Name**: Wallet Scanner
+# **App Name**: Stash
 
 ## Core Features:
 

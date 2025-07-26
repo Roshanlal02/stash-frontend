@@ -1,4 +1,5 @@
 'use client';
+import { useState } from 'react';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -10,17 +11,17 @@ import {
 import { Button } from '@/components/ui/button';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { useAuth } from '@/hooks/use-auth';
-import { auth } from '@/lib/firebase';
-import { signOut } from 'firebase/auth';
-import { Bell, LifeBuoy, LogOut, User as UserIcon } from 'lucide-react';
+import { Bell, LogOut, Plus } from 'lucide-react';
 import { useRouter } from 'next/navigation';
+import { ReceiptUploadDialog } from '@/components/receipts/receipt-upload-dialog';
 
 export function AppHeader() {
-  const { user } = useAuth();
+  const { user, logout } = useAuth();
   const router = useRouter();
+  const [uploadDialogOpen, setUploadDialogOpen] = useState(false);
 
-  const handleSignOut = async () => {
-    await signOut(auth);
+  const handleLogout = () => {
+    logout();
     router.push('/login');
   };
 
@@ -34,39 +35,45 @@ export function AppHeader() {
   };
 
   return (
-    <div className="flex items-center gap-4">
-      <Button variant="ghost" size="icon" className="rounded-full">
-        <Bell className="h-5 w-5" />
-        <span className="sr-only">Toggle notifications</span>
-      </Button>
-      <DropdownMenu>
-        <DropdownMenuTrigger asChild>
-          <Button variant="secondary" size="icon" className="rounded-full">
-            <Avatar className="h-8 w-8">
-              <AvatarImage src={user?.photoURL || ''} alt={user?.displayName || 'User'} />
-              <AvatarFallback>{getInitials(user?.displayName)}</AvatarFallback>
-            </Avatar>
-            <span className="sr-only">Toggle user menu</span>
-          </Button>
-        </DropdownMenuTrigger>
-        <DropdownMenuContent align="end">
-          <DropdownMenuLabel>{user?.displayName || 'My Account'}</DropdownMenuLabel>
-          <DropdownMenuSeparator />
-          <DropdownMenuItem>
-            <UserIcon className="mr-2 h-4 w-4" />
-            <span>Profile</span>
-          </DropdownMenuItem>
-          <DropdownMenuItem>
-            <LifeBuoy className="mr-2 h-4 w-4" />
-            <span>Support</span>
-          </DropdownMenuItem>
-          <DropdownMenuSeparator />
-          <DropdownMenuItem onClick={handleSignOut}>
-            <LogOut className="mr-2 h-4 w-4" />
-            <span>Log out</span>
-          </DropdownMenuItem>
-        </DropdownMenuContent>
-      </DropdownMenu>
-    </div>
+    <>
+      <div className="flex items-center gap-4">
+        <Button 
+          onClick={() => setUploadDialogOpen(true)}
+          size="sm" 
+          className="gap-2"
+        >
+          <Plus className="h-4 w-4" />
+          <span className="hidden sm:inline">Add Receipt</span>
+        </Button>
+        <Button variant="ghost" size="icon" className="rounded-full">
+          <Bell className="h-5 w-5" />
+          <span className="sr-only">Toggle notifications</span>
+        </Button>
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <Button variant="secondary" size="icon" className="rounded-full">
+              <Avatar className="h-8 w-8">
+                <AvatarImage src="" alt={user?.displayName || 'User'} />
+                <AvatarFallback>{getInitials(user?.displayName)}</AvatarFallback>
+              </Avatar>
+              <span className="sr-only">Toggle user menu</span>
+            </Button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent align="end">
+            <DropdownMenuLabel>{user?.displayName || 'My Account'}</DropdownMenuLabel>
+            <DropdownMenuSeparator />
+            <DropdownMenuItem onClick={handleLogout}>
+              <LogOut className="mr-2 h-4 w-4" />
+              <span>Log out</span>
+            </DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
+      </div>
+      
+      <ReceiptUploadDialog 
+        open={uploadDialogOpen} 
+        onOpenChange={setUploadDialogOpen} 
+      />
+    </>
   );
 }
