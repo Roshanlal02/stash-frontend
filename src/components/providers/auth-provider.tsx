@@ -16,6 +16,11 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    // only run if auth is fully initialized
+    if (!auth.onAuthStateChanged) {
+        setLoading(false);
+        return;
+    }
     const unsubscribe = onAuthStateChanged(auth, (user) => {
       setUser(user);
       setLoading(false);
