@@ -4,10 +4,10 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@
 import { Badge } from '@/components/ui/badge';
 
 const receipts = [
-  { id: 1, merchant: 'Luxury Cafe', date: '2024-07-29', category: 'Dining', amount: 250.00, status: 'Anomaly' },
-  { id: 2, merchant: 'Tech Gadgets Inc.', date: '2024-07-28', category: 'Electronics', amount: 499.99, status: 'Normal' },
-  { id: 3, merchant: 'SuperMart', date: '2024-07-27', category: 'Groceries', amount: 85.40, status: 'Normal' },
-  { id: 4, merchant: 'City Transit', date: '2024-07-26', category: 'Transport', amount: 5.50, status: 'Normal' },
+  { id: 1, merchant: 'Luxury Cafe', date: '2024-07-29', category: 'Dining', amount: 20000.00, status: 'Anomaly' },
+  { id: 2, merchant: 'Tech Gadgets Inc.', date: '2024-07-28', category: 'Electronics', amount: 41250.00, status: 'Normal' },
+  { id: 3, merchant: 'SuperMart', date: '2024-07-27', category: 'Groceries', amount: 7050.00, status: 'Normal' },
+  { id: 4, merchant: 'City Transit', date: '2024-07-26', category: 'Transport', amount: 450.00, status: 'Normal' },
 ];
 
 export default function ReceiptsPage() {
@@ -41,7 +41,7 @@ export default function ReceiptsPage() {
                         {receipt.status}
                       </Badge>
                     </TableCell>
-                    <TableCell className="text-right">${receipt.amount.toFixed(2)}</TableCell>
+                    <TableCell className="text-right">₹{receipt.amount.toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</TableCell>
                   </TableRow>
                 ))}
               </TableBody>

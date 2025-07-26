@@ -13,12 +13,12 @@ const userProgress = {
 };
 
 const levels = [
-    { id: 1, name: "January Savings", goal: 100, status: "completed" },
-    { id: 2, name: "February Frugality", goal: 150, status: "completed" },
-    { id: 3, name: "March Moolah", goal: 200, status: "completed" },
-    { id: 4, name: "April Accumulation", goal: 250, status: "active" },
-    { id: 5, name: "May Money", goal: 300, status: "locked" },
-    { id: 6, name: "June Journey", goal: 350, status: "locked" },
+    { id: 1, name: "January Savings", goal: 8000, status: "completed" },
+    { id: 2, name: "February Frugality", goal: 12000, status: "completed" },
+    { id: 3, name: "March Moolah", goal: 16000, status: "completed" },
+    { id: 4, name: "April Accumulation", goal: 20000, status: "active" },
+    { id: 5, name: "May Money", goal: 25000, status: "locked" },
+    { id: 6, name: "June Journey", goal: 30000, status: "locked" },
 ];
 
 export default function GamificationPage() {
@@ -84,7 +84,7 @@ export default function GamificationPage() {
                                     </div>
                                     <div className="flex-1">
                                         <p className={`font-semibold ${level.status === 'locked' ? 'text-muted-foreground' : ''}`}>{level.name}</p>
-                                        <p className={`text-sm ${level.status === 'locked' ? 'text-muted-foreground/70' : 'text-muted-foreground'}`}>Goal: Save ${level.goal}</p>
+                                        <p className={`text-sm ${level.status === 'locked' ? 'text-muted-foreground/70' : 'text-muted-foreground'}`}>Goal: Save ₹{level.goal.toLocaleString('en-IN')}</p>
                                     </div>
                                     {level.id === userProgress.level && <Crown className="h-6 w-6 text-yellow-500" />}
                                 </div>

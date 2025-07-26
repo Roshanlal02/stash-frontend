@@ -5,7 +5,7 @@ import { SpendingChart } from '@/components/stats/spending-chart';
 const badges = [
   { id: 1, name: 'First Scan', description: 'Scanned your first receipt.', icon: Trophy },
   { id: 2, name: 'Budget Master', description: 'Stayed within budget for a month.', icon: Shield },
-  { id: 3, name: 'Super Saver', description: 'Saved over $500 in a month.', icon: Star },
+  { id: 3, name: 'Super Saver', description: 'Saved over ₹40,000 in a month.', icon: Star },
   { id: 4, name: 'Anomaly Hunter', description: 'Detected 5 spending anomalies.', icon: Zap },
   { id: 5, name: 'Monthly Streak', description: 'Used the app every day for a month.', icon: Trophy },
 ];

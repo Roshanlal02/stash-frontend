@@ -12,10 +12,10 @@ export default function DashboardPage() {
                 <Card>
                     <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                         <CardTitle className="text-sm font-medium">Total Spending</CardTitle>
-                        <DollarSign className="h-4 w-4 text-muted-foreground" />
+                        <span className="h-4 w-4 text-muted-foreground font-bold">₹</span>
                     </CardHeader>
                     <CardContent>
-                        <div className="text-2xl font-bold">$4,291.89</div>
+                        <div className="text-2xl font-bold">₹3,57,650</div>
                         <p className="text-xs text-muted-foreground">+20.1% from last month</p>
                     </CardContent>
                 </Card>
@@ -25,8 +25,8 @@ export default function DashboardPage() {
                         <CreditCard className="h-4 w-4 text-muted-foreground" />
                     </CardHeader>
                     <CardContent>
-                        <div className="text-2xl font-bold">$708.11</div>
-                        <p className="text-xs text-muted-foreground">of $5,000 budget</p>
+                        <div className="text-2xl font-bold">₹42,350</div>
+                        <p className="text-xs text-muted-foreground">of ₹4,00,000 budget</p>
                     </CardContent>
                 </Card>
                 <Card>
@@ -46,16 +46,16 @@ export default function DashboardPage() {
                     </CardHeader>
                     <CardContent>
                         <div className="text-2xl font-bold">Groceries</div>
-                        <p className="text-xs text-muted-foreground">$1,204 this month</p>
+                        <p className="text-xs text-muted-foreground">₹99,500 this month</p>
                     </CardContent>
                 </Card>
             </div>
 
-            <Alert className="bg-accent/20 border-accent/50 text-accent-foreground [&gt;svg]:text-yellow-500">
+            <Alert className="bg-accent/20 border-accent/50 text-accent-foreground [&>svg]:text-yellow-500">
                 <AlertCircle className="h-4 w-4" />
                 <AlertTitle>Anomaly Detected!</AlertTitle>
                 <AlertDescription>
-                    Unusually high spending of $250 at "Luxury Cafe" detected. This is 300% higher than your average coffee shop visit.
+                    Unusually high spending of ₹20,000 at "Luxury Cafe" detected. This is 300% higher than your average coffee shop visit.
                 </AlertDescription>
             </Alert>
 
@@ -91,7 +91,7 @@ export default function DashboardPage() {
                                     </TableCell>
                                     <TableCell className="hidden xl:table-column">Dining</TableCell>
                                     <TableCell className="hidden xl:table-column">2024-07-29</TableCell>
-                                    <TableCell className="text-right">$250.00</TableCell>
+                                    <TableCell className="text-right">₹20,000.00</TableCell>
                                 </TableRow>
                                 <TableRow>
                                     <TableCell>
@@ -99,7 +99,7 @@ export default function DashboardPage() {
                                     </TableCell>
                                     <TableCell className="hidden xl:table-column">Electronics</TableCell>
                                     <TableCell className="hidden xl:table-column">2024-07-28</TableCell>
-                                    <TableCell className="text-right">$499.99</TableCell>
+                                    <TableCell className="text-right">₹41,250.00</TableCell>
                                 </TableRow>
                             </TableBody>
                         </Table>
@@ -112,7 +112,7 @@ export default function DashboardPage() {
                     </CardHeader>
                     <CardContent className="flex flex-col items-center justify-center text-center p-10 border-2 border-dashed rounded-lg">
                        <Download className="h-10 w-10 text-muted-foreground mb-4" />
-                       <p className="text-sm text-muted-foreground mb-2">Drag &amp; drop or</p>
+                       <p className="text-sm text-muted-foreground mb-2">Drag & drop or</p>
                         <Button>Browse Files</Button>
                     </CardContent>
                 </Card>
