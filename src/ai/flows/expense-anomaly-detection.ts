@@ -44,7 +44,7 @@ You will use the receipt data and user spending patterns to determine if there a
 Receipt Data: {{{receiptData}}}
 Spending Patterns: {{{spendingPatterns}}}
 
-Based on the provided data, determine if an anomaly is detected in the user expenses and provide an explanation of the anomaly, including the reason and potential impact.`,,
+Based on the provided data, determine if an anomaly is detected in the user expenses and provide an explanation of the anomaly, including the reason and potential impact.`,
 });
 
 const detectExpenseAnomalyFlow = ai.defineFlow(
