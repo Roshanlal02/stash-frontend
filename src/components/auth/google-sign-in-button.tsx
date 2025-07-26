@@ -21,13 +21,9 @@ export function GoogleSignInButton() {
   const router = useRouter();
 
   const handleSignIn = async () => {
-    // Check if firebase is configured
-    if (!auth?.app) {
-        toast({
-            title: "Configuration Error",
-            description: "Firebase is not configured. Please add your credentials.",
-            variant: "destructive",
-        });
+    // Check if firebase is configured. If not, simulate login for prototyping.
+    if (!auth?.app?.options?.apiKey) {
+        router.push('/dashboard');
         return;
     }
     try {
