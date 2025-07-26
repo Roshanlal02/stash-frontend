@@ -15,16 +15,13 @@ const allConfigSet = Object.values(firebaseConfig).every(Boolean);
 
 let app: FirebaseApp;
 let auth: Auth;
-let googleProvider;
+let googleProvider: GoogleAuthProvider;
 
 if (allConfigSet) {
   app = !getApps().length ? initializeApp(firebaseConfig) : getApp();
   auth = getAuth(app);
   googleProvider = new GoogleAuthProvider();
 } else {
-  if (process.env.NODE_ENV !== 'production') {
-    console.error("Firebase config is not set. Please add your Firebase credentials to your .env file.");
-  }
   // Provide mock objects to prevent app crashes during development if keys are missing
   app = {} as FirebaseApp;
   auth = {} as Auth;
