@@ -7,6 +7,7 @@ import {
   PiggyBank,
   BarChart,
   Wallet,
+  Gamepad2,
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
@@ -15,6 +16,7 @@ const navItems = [
   { href: '/receipts', label: 'Receipts', icon: Receipt },
   { href: '/budget', label: 'Budget', icon: PiggyBank },
   { href: '/stats', label: 'Stats & Badges', icon: BarChart },
+  { href: '/gamification', label: 'Gamification', icon: Gamepad2 },
 ];
 
 export function AppSidebar({ onLinkClick }: { onLinkClick?: () => void }) {
