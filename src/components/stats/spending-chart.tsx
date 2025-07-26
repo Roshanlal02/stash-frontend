@@ -1,7 +1,7 @@
 'use client';
 
-import { Bar, BarChart as RechartsBarChart } from 'recharts';
-import { ChartConfig, ChartContainer, ChartTooltip, ChartTooltipContent, ChartLegend, ChartLegendContent, ChartYAxis, ChartXAxis } from "@/components/ui/chart"
+import { Bar, BarChart as RechartsBarChart, XAxis, YAxis } from 'recharts';
+import { ChartConfig, ChartContainer, ChartTooltip, ChartTooltipContent, ChartLegend, ChartLegendContent } from "@/components/ui/chart"
 
 const chartData = [
     { month: 'Jan', groceries: 400, dining: 240, transport: 80 },
@@ -31,8 +31,8 @@ export function SpendingChart() {
     return (
         <ChartContainer config={chartConfig} className="min-h-[200px] w-full h-[350px]">
             <RechartsBarChart data={chartData} accessibilityLayer>
-                <ChartXAxis dataKey="month" tickLine={false} axisLine={false} stroke="hsl(var(--muted-foreground))" fontSize={12} />
-                <ChartYAxis tickLine={false} axisLine={false} stroke="hsl(var(--muted-foreground))" fontSize={12} tickFormatter={(value) => `$${value}`} />
+                <XAxis dataKey="month" tickLine={false} axisLine={false} stroke="hsl(var(--muted-foreground))" fontSize={12} />
+                <YAxis tickLine={false} axisLine={false} stroke="hsl(var(--muted-foreground))" fontSize={12} tickFormatter={(value) => `$${value}`} />
                 <ChartTooltip cursor={false} content={<ChartTooltipContent indicator="dot" />} />
                 <ChartLegend content={<ChartLegendContent />} />
                 <Bar dataKey="groceries" fill="var(--color-groceries)" radius={4} />
