@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useRef, useCallback } from 'react';
+import { useState, useRef } from 'react';
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -8,6 +8,7 @@ import { useToast } from '@/hooks/use-toast';
 import { detectExpenseAnomaly } from '@/ai/flows/expense-anomaly-detection';
 import { Loader2, Upload, Camera, AlertCircle, X } from 'lucide-react';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
+import { CameraDialog } from './camera-dialog';
 
 interface ReceiptUploadDialogProps {
   open: boolean;
@@ -19,83 +20,30 @@ export function ReceiptUploadDialog({ open, onOpenChange }: ReceiptUploadDialogP
   const [isLoading, setIsLoading] = useState(false);
   const [anomalyResult, setAnomalyResult] = useState<{ anomalyDetected: boolean; explanation: string } | null>(null);
   const [uploadMethod, setUploadMethod] = useState<'upload' | 'camera' | null>(null);
-  const [showCamera, setShowCamera] = useState(false);
+  const [cameraDialogOpen, setCameraDialogOpen] = useState(false);
   const { toast } = useToast();
   const fileInputRef = useRef<HTMLInputElement>(null);
-  const videoRef = useRef<HTMLVideoElement>(null);
-  const canvasRef = useRef<HTMLCanvasElement>(null);
-  const streamRef = useRef<MediaStream | null>(null);
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files) {
       setFile(e.target.files[0]);
+      setUploadMethod('upload');
       setAnomalyResult(null);
     }
   };
 
   const handleUploadClick = () => {
-    setUploadMethod('upload');
     fileInputRef.current?.click();
   };
 
-  const startCamera = useCallback(async () => {
-    try {
-      const stream = await navigator.mediaDevices.getUserMedia({ 
-        video: { 
-          facingMode: 'environment' // Use back camera on mobile devices
-        } 
-      });
-      
-      if (videoRef.current) {
-        videoRef.current.srcObject = stream;
-        streamRef.current = stream;
-        setShowCamera(true);
-        setUploadMethod('camera');
-      }
-    } catch (error) {
-      console.error('Error accessing camera:', error);
-      toast({
-        title: 'Camera Error',
-        description: 'Unable to access camera. Please check permissions.',
-        variant: 'destructive'
-      });
-    }
-  }, [toast]);
-
-  const stopCamera = useCallback(() => {
-    if (streamRef.current) {
-      streamRef.current.getTracks().forEach(track => track.stop());
-      streamRef.current = null;
-    }
-    setShowCamera(false);
-  }, []);
-
-  const capturePhoto = useCallback(() => {
-    if (videoRef.current && canvasRef.current) {
-      const canvas = canvasRef.current;
-      const video = videoRef.current;
-      
-      canvas.width = video.videoWidth;
-      canvas.height = video.videoHeight;
-      
-      const context = canvas.getContext('2d');
-      if (context) {
-        context.drawImage(video, 0, 0);
-        
-        canvas.toBlob((blob) => {
-          if (blob) {
-            const file = new File([blob], `receipt-${Date.now()}.jpg`, { type: 'image/jpeg' });
-            setFile(file);
-            setAnomalyResult(null);
-            stopCamera();
-          }
-        }, 'image/jpeg', 0.9);
-      }
-    }
-  }, [stopCamera]);
-
   const handleCameraClick = () => {
-    startCamera();
+    setCameraDialogOpen(true);
+  };
+
+  const handleCameraCapture = (capturedFile: File) => {
+    setFile(capturedFile);
+    setUploadMethod('camera');
+    setAnomalyResult(null);
   };
 
   const handleSubmit = async () => {
@@ -140,7 +88,6 @@ export function ReceiptUploadDialog({ open, onOpenChange }: ReceiptUploadDialogP
     setAnomalyResult(null);
     setUploadMethod(null);
     setIsLoading(false);
-    stopCamera();
   };
 
   const handleClose = () => {
@@ -159,7 +106,7 @@ export function ReceiptUploadDialog({ open, onOpenChange }: ReceiptUploadDialogP
         </DialogHeader>
         
         <div className="space-y-4">
-          {!file && !showCamera && (
+          {!file && (
             <div className="grid grid-cols-2 gap-4">
               <Button
                 variant="outline"
@@ -177,30 +124,6 @@ export function ReceiptUploadDialog({ open, onOpenChange }: ReceiptUploadDialogP
                 <Camera className="h-6 w-6" />
                 <span className="text-sm">Take Photo</span>
               </Button>
-            </div>
-          )}
-
-          {/* Camera interface */}
-          {showCamera && (
-            <div className="space-y-4">
-              <div className="relative border rounded-lg overflow-hidden bg-black">
-                <video
-                  ref={videoRef}
-                  autoPlay
-                  playsInline
-                  className="w-full h-64 object-cover"
-                />
-                <canvas ref={canvasRef} className="hidden" />
-              </div>
-              <div className="flex gap-2">
-                <Button onClick={capturePhoto} className="flex-1">
-                  <Camera className="mr-2 h-4 w-4" />
-                  Capture Photo
-                </Button>
-                <Button variant="outline" onClick={stopCamera}>
-                  Cancel
-                </Button>
-              </div>
             </div>
           )}
 
@@ -254,6 +177,13 @@ export function ReceiptUploadDialog({ open, onOpenChange }: ReceiptUploadDialogP
           )}
         </div>
       </DialogContent>
+      
+      {/* Camera Dialog */}
+      <CameraDialog
+        open={cameraDialogOpen}
+        onOpenChange={setCameraDialogOpen}
+        onCapture={handleCameraCapture}
+      />
     </Dialog>
   );
 }
