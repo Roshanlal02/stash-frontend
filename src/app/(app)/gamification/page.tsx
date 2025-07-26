@@ -1,7 +1,8 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
 import { Flame, Star, Target, Crown } from "lucide-react";
-import Image from "next/image";
+import { PixelatedCastle } from "@/components/gamification/pixel-castle";
+import { motion } from "framer-motion";
 
 const userProgress = {
     level: 5,
@@ -21,18 +22,7 @@ const levels = [
 ];
 
 export default function GamificationPage() {
-    const castleImageUrl = userProgress.level < 5
-        ? "https://placehold.co/600x400.png"
-        : userProgress.level < 10
-            ? "https://placehold.co/600x400.png"
-            : "https://placehold.co/600x400.png";
-
-    const castleImageHint = userProgress.level < 5
-        ? "small castle"
-        : userProgress.level < 10
-            ? "medium castle"
-            : "large castle";
-
+    
     return (
         <div className="space-y-8">
             <Card>
@@ -74,15 +64,8 @@ export default function GamificationPage() {
                         <CardDescription>Your savings are building a magnificent castle.</CardDescription>
                     </CardHeader>
                     <CardContent>
-                        <div className="aspect-video bg-muted rounded-lg overflow-hidden">
-                            <Image
-                                src={castleImageUrl}
-                                alt="Buildable Castle"
-                                width={600}
-                                height={400}
-                                className="w-full h-full object-cover"
-                                data-ai-hint={castleImageHint}
-                            />
+                        <div className="aspect-square bg-blue-100 dark:bg-gray-900/50 rounded-lg overflow-hidden flex items-center justify-center p-4">
+                           <PixelatedCastle level={userProgress.level} />
                         </div>
                         <p className="text-center text-sm text-muted-foreground mt-2">Level {userProgress.level} Castle</p>
                     </CardContent>
