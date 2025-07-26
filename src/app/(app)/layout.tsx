@@ -6,7 +6,7 @@ import { useAuth } from '@/hooks/use-auth';
 import { AppSidebar } from '@/components/layout/sidebar';
 import { AppHeader } from '@/components/layout/header';
 import { Button } from '@/components/ui/button';
-import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
+import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from '@/components/ui/sheet';
 import { Menu } from 'lucide-react';
 
 export default function AppLayout({ children }: { children: ReactNode }) {
@@ -15,8 +15,8 @@ export default function AppLayout({ children }: { children: ReactNode }) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   useEffect(() => {
-    // The auth logic is now handled by the AuthProvider,
-    // but we'll keep this redirect as a fallback.
+    // If auth is disabled (mock user exists) or user is logged in, we stay.
+    // Otherwise, redirect to login.
     if (!loading && !user) {
       router.push('/login');
     }
@@ -28,6 +28,11 @@ export default function AppLayout({ children }: { children: ReactNode }) {
         <div className="h-8 w-8 animate-spin rounded-full border-4 border-primary border-t-transparent"></div>
       </div>
     );
+  }
+
+  // Render nothing if we are about to redirect
+  if (!user) {
+    return null;
   }
 
   return (
@@ -45,6 +50,9 @@ export default function AppLayout({ children }: { children: ReactNode }) {
               </Button>
             </SheetTrigger>
             <SheetContent side="left" className="flex flex-col p-0 w-[280px]">
+              <SheetHeader>
+                <SheetTitle className="sr-only">Navigation Menu</SheetTitle>
+              </SheetHeader>
               <AppSidebar onLinkClick={() => setMobileMenuOpen(false)} />
             </SheetContent>
           </Sheet>
