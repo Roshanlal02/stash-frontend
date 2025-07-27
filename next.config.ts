@@ -18,6 +18,10 @@ const nextConfig: NextConfig = {
       },
     ],
   },
+  experimental: {
+    // Ensure proper client reference handling
+    esmExternals: true,
+  },
 };
 
 export default nextConfig;
