@@ -113,18 +113,21 @@ export function ReceiptUploadDialog({ open, onOpenChange }: ReceiptUploadDialogP
 
           // Enhanced success messages with points info
           const pointsMessage = pointsAwarded ? ` +${pointsAwarded.points} points earned!` : '';
+          const walletMessage = pointsAwarded && pointsAwarded.totalPoints >= 1000 
+            ? ' You can now redeem Google Wallet vouchers!' 
+            : '';
           
           if (anomalyResult.anomalyDetected) {
             toast({
               title: 'Receipt Processed - Anomaly Detected!',
-              description: `${uploadResult.data.merchant}: $${uploadResult.data.amount}. ${anomalyResult.explanation}${pointsMessage}`,
+              description: `${uploadResult.data.merchant}: ₹${uploadResult.data.amount}. ${anomalyResult.explanation}${pointsMessage}${walletMessage}`,
               variant: 'destructive',
               duration: 8000,
             });
           } else {
             toast({
               title: 'Receipt Processed Successfully',
-              description: `${uploadResult.data.merchant}: $${uploadResult.data.amount} - No anomalies detected.${pointsMessage}`,
+              description: `${uploadResult.data.merchant}: ₹${uploadResult.data.amount} - No anomalies detected.${pointsMessage}${walletMessage}`,
               duration: 5000,
             });
           }
@@ -133,9 +136,12 @@ export function ReceiptUploadDialog({ open, onOpenChange }: ReceiptUploadDialogP
           console.warn('Anomaly detection failed:', anomalyError);
           setUploadProgress('complete');
           const pointsMessage = pointsAwarded ? ` +${pointsAwarded.points} points earned!` : '';
+          const walletMessage = pointsAwarded && pointsAwarded.totalPoints >= 1000 
+            ? ' You can now redeem Google Wallet vouchers!' 
+            : '';
           toast({
             title: 'Receipt Uploaded Successfully',
-            description: `${uploadResult.data.merchant}: $${uploadResult.data.amount} - Processed successfully.${pointsMessage}`,
+            description: `${uploadResult.data.merchant}: ₹${uploadResult.data.amount} - Processed successfully.${pointsMessage}${walletMessage}`,
             duration: 5000,
           });
         }

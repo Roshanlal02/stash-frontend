@@ -6,6 +6,7 @@ import {
   Receipt,
   PiggyBank,
   BarChart,
+  Wallet,
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import Image from 'next/image';
@@ -16,6 +17,7 @@ const navItems = [
   { href: '/receipts', label: 'Receipts', icon: Receipt },
   { href: '/budget', label: 'Budget', icon: PiggyBank },
   { href: '/stats', label: 'Stats & Badges', icon: BarChart },
+  { href: '/wallet', label: 'Google Wallet', icon: Wallet },
 ];
 
 export function AppSidebar({ onLinkClick }: { onLinkClick?: () => void }) {

@@ -1,5 +1,8 @@
 'use server';
 
+// 🔧 MOCK MODE: AI flows are mocked for development/testing
+// Remove this comment and restore real AI calls for production
+
 /**
  * @fileOverview Expense Anomaly Detection AI agent.
  *
@@ -30,7 +33,58 @@ const DetectExpenseAnomalyOutputSchema = z.object({
 export type DetectExpenseAnomalyOutput = z.infer<typeof DetectExpenseAnomalyOutputSchema>;
 
 export async function detectExpenseAnomaly(input: DetectExpenseAnomalyInput): Promise<DetectExpenseAnomalyOutput> {
-  return detectExpenseAnomalyFlow(input);
+  console.log('🔧 MOCK: Detecting expense anomalies', input);
+  
+  // Simulate AI processing delay
+  await new Promise(resolve => setTimeout(resolve, 1500 + Math.random() * 2500));
+  
+  // Parse receipt data to determine if it's anomalous
+  const receiptAmount = parseFloat(input.receiptData.match(/Amount: ([\d.]+)/i)?.[1] || '0');
+  const merchantName = input.receiptData.match(/Merchant: ([^,]+)/i)?.[1] || 'Unknown';
+  const category = input.receiptData.match(/Category: ([^,]+)/i)?.[1] || 'Unknown';
+  
+  // Generate mock anomaly detection results
+  const anomalyScenarios = [
+    {
+      condition: () => receiptAmount > 500 || merchantName.toLowerCase().includes('luxury'),
+      result: {
+        anomalyDetected: true,
+        explanation: `Unusual high spending of ₹${receiptAmount.toLocaleString('en-IN')} at "${merchantName}" detected. This amount is 280% higher than your average ${category.toLowerCase()} expense. Consider reviewing if this purchase aligns with your budget goals and if this was a planned expense.`
+      }
+    },
+    {
+      condition: () => receiptAmount > 200,
+      result: {
+        anomalyDetected: true,
+        explanation: `Moderate spending alert: ₹${receiptAmount.toLocaleString('en-IN')} at "${merchantName}" is 150% above your typical ${category.toLowerCase()} expense pattern. This could impact your monthly budget if it becomes a trend. Monitor similar expenses this month to stay within budget.`
+      }
+    },
+    {
+      condition: () => merchantName.toLowerCase().includes('coffee') && receiptAmount > 50,
+      result: {
+        anomalyDetected: true,
+        explanation: `Coffee spending anomaly: ₹${receiptAmount.toLocaleString('en-IN')} at "${merchantName}" is unusually high for a coffee purchase. Your average coffee expense is ₹25. Consider if this was a group purchase or includes additional items.`
+      }
+    },
+    {
+      condition: () => true, // Default case
+      result: {
+        anomalyDetected: false,
+        explanation: `Normal spending pattern: ₹${receiptAmount.toLocaleString('en-IN')} at "${merchantName}" falls within your typical ${category.toLowerCase()} expense range. This purchase aligns well with your spending habits and budget allocation. Continue maintaining these healthy spending patterns.`
+      }
+    }
+  ];
+
+  // Find the first matching scenario
+  const selectedScenario = anomalyScenarios.find(scenario => scenario.condition()) || anomalyScenarios[anomalyScenarios.length - 1];
+  
+  console.log('🔧 MOCK: Anomaly detection completed', { 
+    anomalyDetected: selectedScenario.result.anomalyDetected,
+    amount: receiptAmount,
+    merchant: merchantName
+  });
+  
+  return selectedScenario.result;
 }
 
 const prompt = ai.definePrompt({
