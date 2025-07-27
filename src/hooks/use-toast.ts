@@ -9,13 +9,14 @@ import type {
 } from "@/components/ui/toast"
 
 const TOAST_LIMIT = 1
-const TOAST_REMOVE_DELAY = 1000000
+const TOAST_REMOVE_DELAY = 1000
 
 type ToasterToast = ToastProps & {
   id: string
   title?: React.ReactNode
   description?: React.ReactNode
   action?: ToastActionElement
+  duration?: number
 }
 
 const actionTypes = {
@@ -163,6 +164,20 @@ function toast({ ...props }: Toast) {
       },
     },
   })
+
+  // Auto-dismiss toast after timeout
+  const getTimeout = () => {
+    // Use custom duration if provided
+    if (props.duration) return props.duration
+    
+    // Default timeouts based on variant
+    if (props.variant === 'destructive') return 5000 // 5 seconds for errors
+    return 3000 // 3 seconds for success/default
+  }
+  
+  setTimeout(() => {
+    dismiss()
+  }, getTimeout())
 
   return {
     id: id,

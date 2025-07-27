@@ -1,5 +1,8 @@
 'use client';
 
+// 🔧 MOCK MODE: All API calls are mocked for development/testing
+// Remove this comment and restore real API calls for production
+
 import { useAuth } from '@/hooks/use-auth';
 
 interface AwardPointsRequest {
@@ -33,84 +36,44 @@ export class GamificationAPIError extends Error {
 
 export const gamificationAPI = {
   async awardPoints(userId: string, receiptId: string): Promise<AwardPointsResponse> {
+    console.log('🔧 MOCK: Awarding points for user:', userId, 'receipt:', receiptId);
+    
     try {
-      // Make API request to award points
-      const response = await fetch('https://stash-api-q7i2taqzba-uc.a.run.app/adk/game/award-points', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          userId,
-          receiptId
-        }),
-      });
-
-      // Check if response is ok
-      if (!response.ok) {
-        let errorMessage = `HTTP ${response.status}: ${response.statusText}`;
-        let errorCode = response.status.toString();
-        let errorDetails = null;
-
-        try {
-          const errorData = await response.json();
-          errorMessage = errorData.message || errorData.error || errorMessage;
-          errorCode = errorData.code || errorCode;
-          errorDetails = errorData.details || errorData;
-        } catch (parseError) {
-          // If we can't parse the error response, use the default message
-        }
-
-        // Handle specific HTTP status codes
-        switch (response.status) {
-          case 400:
-            throw new GamificationAPIError(
-              'Invalid request. Please check receipt ID and try again.',
-              'INVALID_REQUEST',
-              errorDetails
-            );
-          case 404:
-            throw new GamificationAPIError(
-              'Receipt not found or already processed.',
-              'RECEIPT_NOT_FOUND',
-              errorDetails
-            );
-          case 409:
-            throw new GamificationAPIError(
-              'Points already awarded for this receipt.',
-              'POINTS_ALREADY_AWARDED',
-              errorDetails
-            );
-          case 429:
-            throw new GamificationAPIError(
-              'Too many requests. Please try again later.',
-              'RATE_LIMITED',
-              errorDetails
-            );
-          case 500:
-            throw new GamificationAPIError(
-              'Server error occurred. Please try again later.',
-              'SERVER_ERROR',
-              errorDetails
-            );
-          default:
-            throw new GamificationAPIError(errorMessage, errorCode, errorDetails);
-        }
-      }
-
-      // Parse successful response
-      const data: AwardPointsResponse = await response.json();
+      // Simulate network delay
+      await new Promise(resolve => setTimeout(resolve, 800 + Math.random() * 1200));
       
-      // Validate required fields
-      if (!data.status || typeof data.points !== 'number' || typeof data.totalPoints !== 'number') {
+      // Simulate occasional failures (5% chance)
+      if (Math.random() < 0.05) {
         throw new GamificationAPIError(
-          'Invalid response format from server',
-          'INVALID_RESPONSE',
-          data
+          "Mock: Points service temporarily unavailable",
+          "SERVICE_UNAVAILABLE",
+          { retryAfter: 2000 }
         );
       }
 
-      return data;
+      // Calculate mock points based on receipt characteristics
+      const basePoints = Math.floor(Math.random() * 50) + 25; // 25-75 base points
+      const bonusPoints = Math.random() > 0.7 ? Math.floor(Math.random() * 25) + 10 : 0; // 30% chance of bonus
+      const totalPointsAwarded = basePoints + bonusPoints;
+
+      // Simulate user's total points (progressive increase)
+      const currentTime = Date.now();
+      const daysSinceEpoch = Math.floor(currentTime / (1000 * 60 * 60 * 24));
+      const simulatedTotalPoints = (daysSinceEpoch % 1000) * 47 + totalPointsAwarded; // Varying total
+
+      const mockResponse: AwardPointsResponse = {
+        status: bonusPoints > 0 ? 'success_with_bonus' : 'success',
+        points: totalPointsAwarded,
+        totalPoints: simulatedTotalPoints
+      };
+
+      console.log('🔧 MOCK: Points awarded successfully', { 
+        pointsAwarded: totalPointsAwarded, 
+        totalPoints: simulatedTotalPoints,
+        hasBonus: bonusPoints > 0
+      });
+
+      return mockResponse;
 
     } catch (error) {
       // Handle network errors and other exceptions
@@ -118,16 +81,8 @@ export const gamificationAPI = {
         throw error;
       }
 
-      if (error instanceof TypeError && error.message.includes('fetch')) {
-        throw new GamificationAPIError(
-          'Network error. Please check your connection and try again.',
-          'NETWORK_ERROR',
-          error
-        );
-      }
-
       throw new GamificationAPIError(
-        error instanceof Error ? error.message : 'An unexpected error occurred',
+        error instanceof Error ? error.message : 'Mock: Points awarding failed',
         'UNKNOWN_ERROR',
         error
       );

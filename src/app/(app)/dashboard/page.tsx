@@ -6,6 +6,7 @@ import { Activity, ArrowUpRight, CreditCard, DollarSign, AlertCircle, ShoppingCa
 import Link from "next/link";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { PixelatedCastle } from "@/components/gamification/pixel-castle";
+import { WalletPreview } from "@/components/wallet/wallet-preview";
 import castlePng from "./castle.png";
 
 const userProgress = {
@@ -163,6 +164,9 @@ export default function DashboardPage() {
                     </CardContent>
                 </Card>
             </div>
+
+            {/* Google Wallet Rewards Preview */}
+            <WalletPreview />
 
             <div className="grid gap-4 lg:gap-6 grid-cols-1">
                 <Card className="min-w-0">
